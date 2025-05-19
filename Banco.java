@@ -122,27 +122,44 @@ public class Banco{
                 System.out.println(i+1+"). Nombre del titular: "+cuentas.get(i).titular +" : Numero de cuenta: "+ cuentas.get(i).numeroDeCuenta);
         }
     }
-    public static void guardarFichero() throws IOException {
+// Método para guardar todas las cuentas bancarias en un archivo de texto
+public static void guardarFichero() throws IOException {
+    // Se crea un FileWriter para escribir en el archivo "CuentasBancarias.txt"
     FileWriter fl = new FileWriter("CuentasBancarias.txt");
+    
+    // Se usa BufferedWriter para mejorar el rendimiento de escritura
     BufferedWriter bf = new BufferedWriter(fl);
 
+    // Se recorre la lista de cuentas bancarias (suponiendo que 'cuentas' es una lista accesible aquí)
     for (Cuenta cuenta : cuentas) {
+        // Se determina el tipo de cuenta según su clase (CuentaAhorro o CuentaCorriente)
         String tipoCuenta = cuenta instanceof CuentaAhorro ? "Cuenta Ahorro" : "Cuenta Corriente";
+
+        // Se construye la línea de texto con los datos comunes de la cuenta
         String linea = "Titular: " + cuenta.titular +
             " | Tipo: " + tipoCuenta +
             " | Nº de cuenta: " + cuenta.numeroDeCuenta +
             " | Saldo: " + cuenta.saldo;
 
+        // Si la cuenta es de tipo CuentaAhorro, se añade el número de extracciones
         if (cuenta instanceof CuentaAhorro) {
             linea += " | Extracciones: " + ((CuentaAhorro) cuenta).numeroDeExtracciones;
         }
 
+        // Se escribe la línea en el archivo
         bf.write(linea);
+
+        // Se escribe un salto de línea para separar cada cuenta
         bf.newLine();
     }
+
+    // Se cierra el BufferedWriter para liberar recursos y asegurar que se escriba todo
     bf.close();
+
+    // Mensaje de confirmación en consola
     System.out.println("Cuentas guardadas en 'CuentasBancarias.txt'.");
-    }
+}
+
     public static void cargarFichero() {
     try {
         // Creamos el lector del archivo
